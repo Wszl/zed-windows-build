@@ -49,7 +49,7 @@ jobs:
           # Comma-separated list of Rust toolchain specifications. Last version becomes the default. -- see https://rust-lang.github.io/rustup/concepts/toolchains.html#toolchain-specification
           #toolchain: # optional
           # Target triple to install for this toolchain
-          #target: # optional
+          target: wasm32-wasip1 # optional
           # Comma-separated list of components to be additionally installed
           #components: # optional
           # Automatically configure Rust cache
