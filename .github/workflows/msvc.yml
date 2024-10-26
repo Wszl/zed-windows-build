@@ -88,6 +88,7 @@ jobs:
         run: |
           ls
           cd zed
+          rustup target add wasm32-wasip1
           cargo run --release
       - name: cache build
         uses: actions/cache@v4
