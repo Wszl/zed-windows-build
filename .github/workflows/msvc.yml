@@ -92,6 +92,7 @@ jobs:
           cargo run --release
       - name: cache build
         uses: actions/cache@v4
+        if: ${{ always() }}
         with:
           path: |
             ~/.cargo/bin/
@@ -104,7 +105,7 @@ jobs:
         run: |
           cargo test --workspace
       - name: upload artifact
-        continue-on-error: true
+        if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
           name: zed-${{ matrix.arch }}
