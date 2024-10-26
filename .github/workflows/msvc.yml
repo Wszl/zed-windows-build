@@ -75,5 +75,7 @@ jobs:
           # toolset: 14.11
       - name: build zed
         run: |
+          dir
+          ls
           cd zed
           cargo run --release
