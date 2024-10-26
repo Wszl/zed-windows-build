@@ -44,7 +44,7 @@ jobs:
         # You may pin to the exact commit or the version.
         # uses: actions-rust-lang/setup-rust-toolchain@11df97af8e8102fd60b60a77dfbf58d40cd843b8
         uses: actions-rust-lang/setup-rust-toolchain@v1.10.1
-        #with:
+        with:
           # Comma-separated list of Rust toolchain specifications. Last version becomes the default. -- see https://rust-lang.github.io/rustup/concepts/toolchains.html#toolchain-specification
           #toolchain: # optional
           # Target triple to install for this toolchain
@@ -52,13 +52,13 @@ jobs:
           # Comma-separated list of components to be additionally installed
           #components: # optional
           # Automatically configure Rust cache
-          #cache: # optional, default is true
+          cache: false # optional, default is true
           # Paths to multiple Cargo workspaces and their target directories, separated by newlines.
           #cache-workspaces: # optional
           # Additional non workspace directories to be cached, separated by newlines.
           #cache-directories: # optional
           # Also cache on workflow failures
-          #cache-on-failure: # optional, default is true
+          cache-on-failure: false # optional, default is true
           # An additional cache key that is added alongside the automatic `job`-based cache key and can be used to further differentiate jobs.
           #cache-key: # optional
           # Enable the Rust problem matcher
@@ -72,7 +72,7 @@ jobs:
         with:
           arch: ${{ matrix.arch }}
           sdk: 10.0.20348.0
-          toolset: 14.38
+          toolset: 14.11
       - name: build zed
         run: |
           cd zed
