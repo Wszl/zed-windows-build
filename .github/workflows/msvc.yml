@@ -79,3 +79,12 @@ jobs:
           ls
           cd zed
           cargo run --release
+      - name: test
+        run: |
+          cargo test --release
+      - name: upload artifact
+      - uses: actions/upload-artifact@v4
+        with:
+          name: zed-${{ matrix.arch }}
+          path: ./target/
+
