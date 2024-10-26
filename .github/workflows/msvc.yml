@@ -53,15 +53,20 @@ jobs:
           # Comma-separated list of components to be additionally installed
           #components: # optional
           # Automatically configure Rust cache
-          cache: false # optional, default is true
+          cache: true # optional, default is true
           # Paths to multiple Cargo workspaces and their target directories, separated by newlines.
-          #cache-workspaces: # optional
+          cache-workspaces: | # optional
+            target/
           # Additional non workspace directories to be cached, separated by newlines.
-          #cache-directories: # optional
+          cache-directories: | # optional
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
           # Also cache on workflow failures
           cache-on-failure: false # optional, default is true
           # An additional cache key that is added alongside the automatic `job`-based cache key and can be used to further differentiate jobs.
-          #cache-key: # optional
+          cache-key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }} # optional
           # Enable the Rust problem matcher
           #matcher: # optional, default is true
           # set RUSTFLAGS environment variable, set to empty string to avoid overwriting build.rustflags
@@ -81,7 +86,7 @@ jobs:
           cargo run --release
       - name: test
         run: |
-          cargo test --release
+          cargo test --workspace
       - name: upload artifact
         uses: actions/upload-artifact@v4
         with:
