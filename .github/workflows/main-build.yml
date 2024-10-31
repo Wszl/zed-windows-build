@@ -46,9 +46,9 @@ jobs:
       - name: patch zed
         shell: cmd
         run: |
-          git am --abort
           git config user.name "zed-windows-build"
           git config user.email "zed-windows-build@github.com"
+          git am --abort
           for /r "patchs" %%f in (*.patch) do git am %%f
       - name: setup rust
         uses: actions-rs/toolchain@v1
