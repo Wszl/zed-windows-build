@@ -43,7 +43,13 @@ jobs:
         with:
           repository: zed-industries/zed
           path: zed
-      - name: patch zed 
+      - name: 'Check File Existence'
+        id: check_files
+        uses: thebinaryfelix/check-file-existence-action@v1
+        with:
+          files: 'patchs/*.patchs'
+      - name: patch zed
+        if: steps.check_files.outputs.exists == 'true' 
         run: |
           mv patchs zed/
           cd zed
