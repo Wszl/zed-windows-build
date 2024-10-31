@@ -87,12 +87,15 @@ jobs:
 
       - name: create release artifact
         run: tar -c -f zed-${{ matrix.arch }}-windows.zip zed/target/release
-
+        
+      - name: set cur date
+        run: echo "DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+        
       - name: Upload release build artifact to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          name: ${{ env.CURRENT_DATE }}
-          tag_name: ${{ env.CURRENT_DATE }}
+          name: ${{ env.DATE }}
+          tag_name: ${{ env.DATE }}
           draft: false
           make_latest: true
           files: zed-${{ matrix.arch }}-windows.zip
