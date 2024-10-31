@@ -43,12 +43,12 @@ jobs:
         with:
           repository: zed-industries/zed
           path: zed
-      - name: set cur date
+      - name: patch zed 
         run: |
           cd zed
           git config user.name "zed-windows-build"
           git config user.email "zed-windows-build@github.com"
-          git am ../patch/*.patch
+          git am ../patchs/*.patch
       - name: setup rust
         uses: actions-rs/toolchain@v1
         with:
