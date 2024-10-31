@@ -26,7 +26,7 @@ permissions:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: windows-2022
     # Run a job for each of the specified target architectures:
     strategy:
       matrix:
@@ -84,6 +84,16 @@ jobs:
           arch: ${{ matrix.arch }}
           sdk: 10.0.20348.0
           # toolset: 14.11
+      - name: Install Vulkan SDK
+        uses: jakoch/install-vulkan-sdk-action@v1.0.0
+        with:
+          # You can set the Vulkan SDK version to download.
+          # Defaults to latest version, if version not set.
+          # vulkan_version: 1.3.231.1
+          optional_components: com.lunarg.vulkan.vma
+          install_runtime: true
+          cache: true
+          stripdown: true
       - name: build zed
         run: |
           ls
@@ -109,5 +119,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: zed-${{ matrix.arch }}
-          path: ./target/
+          path: ./target/release/zed.exe
 
