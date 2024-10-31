@@ -15,7 +15,7 @@ on:
   pull_request:
     branches: [ "dev" ]
   schedule:
-    - cron: '23 15 * * 3'
+    - cron: '23 00 * * *'
 
 env:
   # Path to the CMake build directory.
@@ -85,9 +85,8 @@ jobs:
           name: zed-${{ matrix.arch }}
           path: zed/target/release/zed.exe
 
-
       - name: create release artifact
-        run: zip -r zed-windows.zip zed/target/release/*
+        run: tar -c -f zed-${{ matrix.arch }}-windows.zip zed/target/release
 
       - name: Upload release build artifact to GitHub Release
         uses: softprops/action-gh-release@v2
@@ -96,4 +95,4 @@ jobs:
           tag_name: ${{ env.CURRENT_DATE }}
           draft: false
           make_latest: true
-          files: zed-windows.zip
+          files: zed-${{ matrix.arch }}-windows.zip
