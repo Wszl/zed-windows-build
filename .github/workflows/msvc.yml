@@ -94,6 +94,10 @@ jobs:
           install_runtime: true
           cache: true
           stripdown: true
+      - name: fixed long path
+        shell: pwsh
+        run: |
+          New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem" -Name "LongPathsEnabled" -Value 1 -PropertyType DWORD -Force
       - name: build zed
         run: |
           ls
