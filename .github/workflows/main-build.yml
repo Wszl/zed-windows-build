@@ -44,7 +44,6 @@ jobs:
           repository: zed-industries/zed
           path: zed
       - name: patch zed
-        if: steps.check_files.outputs.exists == 'true' 
         run: |
           mv patchs zed/
           cd zed
