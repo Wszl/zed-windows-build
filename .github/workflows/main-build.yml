@@ -43,6 +43,7 @@ jobs:
         with:
           repository: zed-industries/zed
           path: zed
+      - run: ls
       - name: 'Check File Existence'
         id: check_files
         uses: thebinaryfelix/check-file-existence-action@1.0.0
