@@ -100,6 +100,7 @@ jobs:
           New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem" -Name "LongPathsEnabled" -Value 1 -PropertyType DWORD -Force
       - name: build zed
         run: |
+          git config --system core.longpaths true
           ls
           cd zed
           rustup target add wasm32-wasip1
