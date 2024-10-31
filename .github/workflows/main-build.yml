@@ -43,6 +43,10 @@ jobs:
         with:
           repository: zed-industries/zed
           path: zed
+      - name: set cur date
+        run: |
+          cd zed
+          git am ../patch/*.patch
       - name: setup rust
         uses: actions-rs/toolchain@v1
         with:
