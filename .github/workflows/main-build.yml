@@ -45,11 +45,9 @@ jobs:
           path: zed
       - name: patch zed
         run: |
-          # mv patchs zed/
-          # cd zed
           git config user.name "zed-windows-build"
           git config user.email "zed-windows-build@github.com"
-          git am --directory=patchs/ *.patch
+          for /r "patchs" %f in (*.patch) do git am %f
       - name: setup rust
         uses: actions-rs/toolchain@v1
         with:
