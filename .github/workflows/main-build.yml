@@ -46,6 +46,7 @@ jobs:
       - name: patch zed
         shell: cmd
         run: |
+          cd zed
           git config user.name "zed-windows-build"
           git config user.email "zed-windows-build@github.com"
           git reset --hard HEAD
