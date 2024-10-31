@@ -48,6 +48,7 @@ jobs:
         run: |
           git config user.name "zed-windows-build"
           git config user.email "zed-windows-build@github.com"
+          git reset --hard HEAD
           git am --abort
           for /r "patchs" %%f in (*.patch) do git am %%f
       - name: setup rust
