@@ -44,6 +44,7 @@ jobs:
           repository: zed-industries/zed
           path: zed
       - name: patch zed
+        shell: cmd
         run: |
           git config user.name "zed-windows-build"
           git config user.email "zed-windows-build@github.com"
