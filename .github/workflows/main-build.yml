@@ -99,7 +99,7 @@ jobs:
           path: zed/target/release/zed.exe
 
       - name: create release artifact
-        run: tar -c -f zed-${{ matrix.arch }}-windows.zip zed/target/release
+        run: zip -r zed-${{ matrix.arch }}-windows.zip zed/target/release
         
       - name: set cur date
         run: echo "DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
