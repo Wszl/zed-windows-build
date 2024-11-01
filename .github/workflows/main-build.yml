@@ -38,8 +38,6 @@ jobs:
         run: |
           mv patchs zed/
           cd zed
-          ls
-          ls patchs
           find patchs -type f -name "*.patch" | xargs -I {} echo {}
           find patchs -type f -name "*.patch" | xargs -I {} patch -p1 < {}
       - name: upload patched source to artifact
