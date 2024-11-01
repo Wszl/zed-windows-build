@@ -102,12 +102,12 @@ jobs:
         run: Compress-Archive -Path "zed/target/release/zed.exe" -DestinationPath "zed-${{ matrix.arch }}-windows.zip"   
         
       - name: set cur date
-        run: echo "DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+        run: echo "CUR_DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
         
       - name: Upload release build artifact to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          name: ${{ env.DATE }}
+          name: DATE-${{ env.CUR_DATE }}
           tag_name: ${{ matrix.arch }}-win
           draft: false
           make_latest: true
