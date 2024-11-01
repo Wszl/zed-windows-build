@@ -124,7 +124,7 @@ jobs:
         run: zip -r zed-windows.zip target/*
       - name: release latest
         uses: softprops/action-gh-release@v2
-        if: startsWith(github.ref, 'refs/heads/main') || startsWith(github.ref, 'refs/heads/auto-release')
+        # if: startsWith(github.ref, 'refs/heads/main') || startsWith(github.ref, 'refs/heads/auto-release')
         with:
           name: Nightly - latest
           tag_name: amd64-win
@@ -134,7 +134,7 @@ jobs:
             target/zed.exe
       - name: release
         uses: softprops/action-gh-release@v2
-        if: startsWith(github.ref, 'refs/heads/main') || startsWith(github.ref, 'refs/heads/auto-release')
+        # if: startsWith(github.ref, 'refs/heads/main') || startsWith(github.ref, 'refs/heads/auto-release')
         with:
           name: Nightly ${{ env.TIME }}
           tag_name: "nightly-${{ env.TIME }}"
