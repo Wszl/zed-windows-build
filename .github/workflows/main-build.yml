@@ -38,7 +38,10 @@ jobs:
         run: |
           mv patchs zed/
           cd zed
-          find patchs -type f -name "*.patch" | xargs -I {} patch -p1 < "{}"
+          ls
+          ls patchs
+          find patchs -type f -name "*.patch" | xargs -I {} echo {}
+          find patchs -type f -name "*.patch" | xargs -I {} patch -p1 < {}
       - name: upload patched source to artifact
         uses: actions/upload-artifact@v4
         with:
