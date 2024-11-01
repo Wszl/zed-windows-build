@@ -37,6 +37,7 @@ jobs:
       - name: patch zed
         run: |
           mv patchs zed/
+          cd zed
           ls patchs/*.patch | xargs -I {} patch -p1 < {}
       - name: upload patched source to artifact
         uses: actions/upload-artifact@v4
@@ -44,6 +45,7 @@ jobs:
           name: zed-patched-source
           path: zed/
   build:
+    needs: patch
     runs-on: windows-2022
     # Run a job for each of the specified target architectures:
     strategy:
@@ -106,6 +108,7 @@ jobs:
           path: zed/target/release/zed.exe
         
   release:
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Download artifact
