@@ -25,6 +25,24 @@ permissions:
   contents: read
 
 jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: clone zed repo
+        uses: actions/checkout@v4
+        with:
+          repository: zed-industries/zed
+          path: zed
+      - name: patch zed
+        run: |
+          mv patchs zed/
+          ls patchs/*.patch | xargs -I {} patch -p1 < {}
+      - name: upload patched source to artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: zed-patched-source
+          path: zed/
   build:
     runs-on: windows-2022
     # Run a job for each of the specified target architectures:
@@ -37,22 +55,11 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
-      - name: clone zed repo
-        uses: actions/checkout@v4
+      - name: Download patched source artifact
+        uses: actions/download-artifact@v4
         with:
-          repository: zed-industries/zed
+          name: zed-patched-source
           path: zed
-      - name: patch zed
-        shell: cmd
-        run: |
-          mv patchs zed/
-          cd zed
-          git config user.name "zed-windows-build"
-          git config user.email "zed-windows-build@github.com"
-          git reset --hard HEAD
-          git am --abort
-          for /r "patchs" %%f in (*.patch) do git am %%f
       - name: setup rust
         uses: actions-rs/toolchain@v1
         with:
@@ -97,21 +104,38 @@ jobs:
         with:
           name: zed-${{ matrix.arch }}
           path: zed/target/release/zed.exe
-
-      - name: create release artifact
-        run: Compress-Archive -Path "zed/target/release/zed.exe" -DestinationPath "zed-${{ matrix.arch }}-windows.zip"   
         
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: zed-amd64
+          path: target/
       - name: set time
-        shell: bash
         run: |
           TIME="$(TZ='Asia/Shanghai' date +'%Y-%m-%d %H:%M:%S')"
           echo "TIME=$TIME" >> $GITHUB_ENV
-        
-      - name: Upload release build artifact to GitHub Release
+      - name: create release artifact
+        run: zip -r zed-windows.zip target/*
+      - name: release latest
         uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/heads/main') || startsWith(github.ref, 'refs/heads/auto-release')
         with:
-          name: DATE-${{ env.TIME }}
-          tag_name: ${{ matrix.arch }}-win
-          draft: false
+          name: Nightly - latest
+          tag_name: amd64-win
+          prerelease: true
           make_latest: true
-          files: zed-${{ matrix.arch }}-windows.zip
+          files: |
+            target/zed.exe
+      - name: release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/heads/main') || startsWith(github.ref, 'refs/heads/auto-release')
+        with:
+          name: Nightly ${{ env.TIME }}
+          tag_name: "nightly-${{ env.TIME }}"
+          files: |
+            target/zed.exe
+
+          
