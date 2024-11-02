@@ -120,8 +120,10 @@ jobs:
           path: target/
       - name: set time
         run: |
-          TIME="$(TZ='Asia/Shanghai' date +'%Y-%m-%d %H:%M:%S')"
+          TIME="$(TZ='Asia/Shanghai' date +'%H:%M:%S')"
+          DATE="$(TZ='Asia/Shanghai' date +'%Y-%m-%d')"
           echo "TIME=$TIME" >> $GITHUB_ENV
+          echo "DATE=$DATE" >> $GITHUB_ENV
       - name: create release artifact
         run: zip -r zed-windows.zip target/*
       - name: release latest
@@ -138,8 +140,8 @@ jobs:
         uses: softprops/action-gh-release@v2
         # if: startsWith(github.ref, 'refs/heads/main') || startsWith(github.ref, 'refs/heads/auto-release')
         with:
-          name: Nightly ${{ env.TIME }}
-          tag_name: "nightly-${{ env.TIME }}"
+          name: Nightly ${{ env.DATE }}
+          tag_name: "nightly_${{ env.DATE }}"
           files: |
             target/zed.exe
 
