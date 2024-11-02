@@ -39,7 +39,7 @@ jobs:
           mv patchs zed/
           cd zed
           git reset --hard
-          find patchs -type f -name "*.patch" -print0 | xargs -0 -I {} sh -c 'patch < "{}"'
+          find patchs -type f -name "*.patch" -print0 | xargs -0 -I {} sh -c 'patch -p0 < "{}"'
       - name: upload patched source to artifact
         uses: actions/upload-artifact@v4
         with:
