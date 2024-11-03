@@ -39,13 +39,15 @@ jobs:
       - name: Get latest tag
         run: |
           cd zed
-          latest_tag=$(git describe --tags `git rev-list --tags --max-count=1`)
+          latest_v_tag=$(git tag | grep 'v' | sort -V | tail -1)
+          latest_tag=$(git describe --tags $latest_v_tag)
           echo "Latest tag is: ${latest_tag}"
           echo "LATEST_TAG=$latest_tag" >> $GITHUB_ENV
+          echo $latest_tag > TAG
       - name: upload source to artifact
         uses: actions/upload-artifact@v4
         with:
-          name: zed-source-version-${{ env.LATEST_TAG }}
+          name: zed-source
           path: zed/
   build:
     needs: get
@@ -63,8 +65,15 @@ jobs:
       - name: Download latest source artifact
         uses: actions/download-artifact@v4
         with:
-          name: zed-source-version-${{ env.LATEST_TAG }}
+          name: zed-source
           path: zed
+      - name: Get latest tag
+        run: |
+          cd zed
+          $latest_tag = Get-Content -Path "./TAG" -Raw
+          echo "Latest tag is: ${latest_tag}"
+          echo "LATEST_TAG=$latest_tag" >> $GITHUB_ENV
+
       - name: setup rust
         uses: actions-rs/toolchain@v1
         with:
@@ -109,20 +118,8 @@ jobs:
         with:
           name: zed-${{ matrix.arch }}-version-${{ env.LATEST_TAG }}
           path: zed/target/release/zed.exe
-        
-  release:
-    needs: build
-    runs-on: ubuntu-latest    
-    permissions:
-      contents: write
-    steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: zed-amd64-version-${{ env.LATEST_TAG }}
-          path: target/
       - name: create release artifact
-        run: zip -r zed-windows-${{ env.LATEST_TAG }}.zip target/*
+        run: zip -r zed-windows-${{ env.LATEST_TAG }}.zip zed/target/*
       - name: release
         uses: softprops/action-gh-release@v2
         with:
