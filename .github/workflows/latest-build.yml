@@ -57,15 +57,10 @@ jobs:
           if [ "$latest_tag" == "$latest_build_tag" ]; then
             echo "There is no new version, exit now."
             echo "::set-output name=is_new::true"
+            exit 1
           else
             echo "::set-output name=is_new::false"
           fi
-      - name: check new 
-        if: steps.get_tag.outputs.is_new == 'true'
-        run: | 
-          echo "build new tag."
-          echo "${{ steps.get_tag.outputs.is_new }}"
-          echo "IS_NEW_TAG=${{ steps.get_tag.outputs.is_new }}" >> $GITHUB_ENV
       - name: upload source to artifact
         uses: actions/upload-artifact@v4
         with:
@@ -73,7 +68,6 @@ jobs:
           path: zed/
         
   build:
-    if: env.LATEST_TAG == env.LATEST_BUILD_TAG
     needs: get
     runs-on: windows-2022
     # Run a job for each of the specified target architectures:
