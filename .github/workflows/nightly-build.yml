@@ -6,7 +6,7 @@
 # Find more information at:
 # https://github.com/microsoft/msvc-code-analysis-action
 
-name: zed windows build
+name: zed windows build - nightly
 
 on:
   workflow_dispatch:
