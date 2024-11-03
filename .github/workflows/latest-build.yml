@@ -49,7 +49,7 @@ jobs:
           echo "LATEST_TAG=$latest_tag" >> $GITHUB_ENV
           echo $latest_tag > TAG
           cd ..
-          latest_build_v_tag=$(git for-each-ref --format '%(refname:short)#%(committerdate:unix)' refs/tags/v* | awk -F'#' '{print $2 " " $1}' | sort -k1 -nr | head -1 | awk '{print $2}')
+          latest_build_v_tag=$(git for-each-ref --format '%(refname:short)#%(committerdate:unix)' refs/tags/ | awk -F'#' '{print $2 " " $1}' | sort -k1 -nr | head -1 | awk '{print $2}')
           latest_build_tag=$(git describe --tags $latest_build_v_tag)
           echo "Latest build tag is: ${latest_build_tag}"
           echo "LATEST_BUILD_TAG=$latest_build_tag" >> $GITHUB_ENV
