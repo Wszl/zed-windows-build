@@ -39,7 +39,7 @@ jobs:
       - name: Get latest tag
         run: |
           cd zed
-          latest_v_tag=$(git tag | grep 'v' | sort -V | tail -1)
+          latest_v_tag=$(git tag --sort=v:refname -l 'v*' | tail -1)
           latest_tag=$(git describe --tags $latest_v_tag)
           echo "Latest tag is: ${latest_tag}"
           echo "LATEST_TAG=$latest_tag" >> $GITHUB_ENV
