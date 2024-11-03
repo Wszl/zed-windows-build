@@ -10,5 +10,5 @@ patch文件将在构建过程中自动应用
 
 ## 构建状态
 
-latest: [![zed windows build - latest](https://github.com/Wszl/zed-windows-build/actions/workflows/latest-build.yml/badge.svg)](https://github.com/Wszl/zed-windows-build/actions/workflows/latest-build.yml)
-nightly: disabled 
+* latest: [![zed windows build - latest](https://github.com/Wszl/zed-windows-build/actions/workflows/latest-build.yml/badge.svg)](https://github.com/Wszl/zed-windows-build/actions/workflows/latest-build.yml)
+* nightly: disabled 
