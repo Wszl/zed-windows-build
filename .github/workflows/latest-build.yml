@@ -36,6 +36,7 @@ jobs:
           path: zed
       - name: Get latest tag
         run: |
+          cd zed
           latest_tag=$(git describe --tags `git rev-list --tags --max-count=1`)
           echo "Latest tag is: ${latest_tag}"
           echo "LATEST_TAG=$latest_tag" >> $GITHUB_ENV
