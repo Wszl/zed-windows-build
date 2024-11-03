@@ -73,7 +73,7 @@ jobs:
           path: zed/
         
   build:
-    if: ${{ env.LATEST_TAG == env.LATEST_BUILD_TAG }}
+    if: env.LATEST_TAG == env.LATEST_BUILD_TAG
     needs: get
     runs-on: windows-2022
     # Run a job for each of the specified target architectures:
