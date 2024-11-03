@@ -133,6 +133,6 @@ jobs:
           name: "${{ env.LATEST_TAG }}"
           tag_name: "${{ env.LATEST_TAG }}"
           files: |
-            target/zed.exe
+            zed-windows-${{ env.LATEST_TAG }}.zip
 
           
