@@ -131,19 +131,19 @@ jobs:
         uses: softprops/action-gh-release@v2
         # if: startsWith(github.ref, 'refs/heads/main') || startsWith(github.ref, 'refs/heads/auto-release')
         with:
-          name: Nightly - latest
+          name: Nightly - latest - ${{ env.DATE }}
           tag_name: amd64-win
           prerelease: true
           make_latest: true
           files: |
             target/zed.exe
-      - name: release
-        uses: softprops/action-gh-release@v2
-        # if: startsWith(github.ref, 'refs/heads/main') || startsWith(github.ref, 'refs/heads/auto-release')
-        with:
-          name: Nightly ${{ env.DATE }}
-          tag_name: "nightly_${{ env.DATE }}"
-          files: |
-            target/zed.exe
+      # - name: release
+      #   uses: softprops/action-gh-release@v2
+      #   # if: startsWith(github.ref, 'refs/heads/main') || startsWith(github.ref, 'refs/heads/auto-release')
+      #   with:
+      #     name: Nightly ${{ env.DATE }}
+      #     tag_name: "nightly_${{ env.DATE }}"
+      #     files: |
+      #       target/zed.exe
 
           
