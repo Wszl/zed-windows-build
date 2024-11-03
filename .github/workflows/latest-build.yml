@@ -37,18 +37,34 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
       - name: Get latest tag
+        id: get_tag
         run: |
           cd zed
-          latest_v_tag=$(git for-each-ref --format '%(refname:short)#%(committerdate:unix)' refs/tags/ | awk -F'#' '{print $2 " " $1}' | sort -k1 -nr | head -1 | awk '{print $2}')
+          latest_v_tag=$(git for-each-ref --format '%(refname:short)#%(committerdate:unix)' refs/tags/v* | awk -F'#' '{print $2 " " $1}' | sort -k1 -nr | head -1 | awk '{print $2}')
           latest_tag=$(git describe --tags $latest_v_tag)
           echo "Latest tag is: ${latest_tag}"
           echo "LATEST_TAG=$latest_tag" >> $GITHUB_ENV
           echo $latest_tag > TAG
+          cd ..
+          latest_build_v_tag=$(git for-each-ref --format '%(refname:short)#%(committerdate:unix)' refs/tags/v* | awk -F'#' '{print $2 " " $1}' | sort -k1 -nr | head -1 | awk '{print $2}')
+          latest_build_tag=$(git describe --tags $latest_build_v_tag)
+          echo "Latest build tag is: ${latest_build_tag}"
+          echo "LATEST_BUILD_TAG=$latest_build_tag" >> $GITHUB_ENV
+          if [ "$latest_tag" == "$latest_build_tag" ]; then
+            echo "There is no new version, exit now."
+            echo "::set-output name=is_new::true"
+          else
+            echo "::set-output name=is_new::false"
+          fi
+      - name: check new 
+        if: steps.get_tag.outputs.is_new == 'true'
+        run: echo "build new tag."
       - name: upload source to artifact
         uses: actions/upload-artifact@v4
         with:
           name: zed-source
           path: zed/
+        
   build:
     needs: get
     runs-on: windows-2022
@@ -119,7 +135,7 @@ jobs:
           name: zed-${{ matrix.arch }}-version-${{ env.LATEST_TAG }}
           path: zed/target/release/zed.exe
       - name: create release artifact
-        run: zip -r zed-windows-${{ env.LATEST_TAG }}.zip zed/target/*
+        run: Compress-Archive -Path zed/target/* -DestinationPath zed-windows-${{ env.LATEST_TAG }}.zip -Force 
       - name: release
         uses: softprops/action-gh-release@v2
         with:
