@@ -34,7 +34,7 @@ jobs:
         with:
           repository: zed-industries/zed
           path: zed
-          fetch-depth: 500
+          fetch-depth: 0
           fetch-tags: true
       - name: Get latest tag
         run: |
