@@ -118,7 +118,7 @@ jobs:
           ls
           cd zed
           rustup target add wasm32-wasip1
-          # cargo build --release
+          cargo build --release
       - name: upload artifact
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
