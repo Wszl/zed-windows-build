@@ -20,6 +20,7 @@ on:
 env:
   # Path to the CMake build directory.
   build: '${{ github.workspace }}/build'
+  IS_NEW_TAG: "false"
 
 permissions:
   contents: read
@@ -61,7 +62,10 @@ jobs:
           fi
       - name: check new 
         if: steps.get_tag.outputs.is_new == 'true'
-        run: echo "build new tag."
+        run: | 
+          echo "build new tag."
+          echo "${{ steps.get_tag.outputs.is_new }}"
+          echo "IS_NEW_TAG=${{ steps.get_tag.outputs.is_new }}" >> $GITHUB_ENV
       - name: upload source to artifact
         uses: actions/upload-artifact@v4
         with:
@@ -69,6 +73,7 @@ jobs:
           path: zed/
         
   build:
+    if: ${{ env.LATEST_TAG == env.LATEST_BUILD_TAG }}
     needs: get
     runs-on: windows-2022
     # Run a job for each of the specified target architectures:
@@ -120,8 +125,6 @@ jobs:
           cd zed
           rustup target add wasm32-wasip1
           # cargo build --release
-          mkdir -p target/release/
-          cp README.md target/release/zed.exe
       - name: upload artifact
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
