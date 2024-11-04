@@ -123,10 +123,10 @@ jobs:
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
-          name: zed-${{ matrix.arch }}-version-${{ env.LATEST_TAG }}
+          name: zed-${{ matrix.arch }}-version-${{ env.LATEST_TAG }}.exe
           path: zed/target/release/zed.exe
       - name: create release artifact
-        run: Compress-Archive -Path zed/target/* -DestinationPath zed-windows-${{ env.LATEST_TAG }}.zip -Force 
+        run: Compress-Archive -Path zed/target/release/zed.exe -DestinationPath zed-windows-${{ env.LATEST_TAG }}.zip -Force 
       - name: release
         uses: softprops/action-gh-release@v2
         with:
