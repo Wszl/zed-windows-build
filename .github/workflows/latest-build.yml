@@ -44,7 +44,7 @@ jobs:
         id: get_tag
         run: |
           cd zed
-          latest_v_tag=$(git for-each-ref --format '%(refname:short)#%(committerdate:unix)' refs/tags/v* | awk -F'#' '{print $2 " " $1}' | sort -k1 -nr | head -1 | awk '{print $2}')
+          latest_v_tag=$(git for-each-ref --format '%(refname:short)#%(committerdate:unix)' refs/tags/v*[0-9] | awk -F'#' '{print $2 " " $1}' | sort -k1 -nr | head -1 | awk '{print $2}')
           latest_tag=$(git describe --tags $latest_v_tag)
           echo "Latest tag is: ${latest_tag}"
           echo "LATEST_TAG=$latest_tag" >> $GITHUB_ENV
