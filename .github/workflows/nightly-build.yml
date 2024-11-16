@@ -69,7 +69,7 @@ jobs:
         with:
           toolchain: nightly
           override: true
-          target: wasm32-wasi
+          target: wasm32-wasip1
       - name: setup rust cache
         uses: Swatinem/rust-cache@v2.7.3
         with:
